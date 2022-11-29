@@ -46,7 +46,7 @@ const getPlayersFromGames = (games) => {
     return [...teamOnePlayers, ...teamTwoPlayers]
   }).flat()
 
-  console.log(games.length)
+  console.log('Games found:', games.length)
   
   // Loop array and find duplicates. Merge kills and deasths with all duplicates
   const playersMap = new Map()
@@ -84,7 +84,7 @@ const getTopFragger = async () => {
 
   const allGames = await getAllTotalGames(series)
   const players = getPlayersFromGames(allGames)
-  const topFragger = Array.from(players.values()).sort((a,b) => b.kills - a.kills).flat[0]
+  const topFragger = Array.from(players.values()).sort((a,b) => b.kills - a.kills)[0]
   return topFragger
 }
 
@@ -103,17 +103,12 @@ client.on("message", async (channel, tags, message) => {
   const username = tags["display-name"]
 
   if(message === '!dailyMVP') {
-    const fragger = await getTopFragger()
-    console.log(fragger)
-
-    client.say(channel, `Top fragger is: ${fragger.name} with ${fragger.kills} Kills 🔫 and ${fragger.deaths} Deaths ☠️`);
+    try {
+      const fragger = await getTopFragger()
+      console.log(fragger)
+      client.say(channel, `Top fragger is: ${fragger.name} with ${fragger.kills} Kills 🔫 and ${fragger.deaths} Deaths ☠️`);
+    } catch (error) {
+      console.log(error)
+    } 
   }
-  
 });
-
-// const main = async () => {
-//   const topFragger = await getTopFragger()
-//   console.log(topFragger)
-// }
-
-// main()
