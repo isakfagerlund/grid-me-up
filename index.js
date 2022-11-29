@@ -38,6 +38,7 @@ const getLivePlayerData = async (query) => {
   return await request.json();
 }
 
+
 const getPlayersFromGames = (games) => {
   const players = games.map(game => {
     const teamOnePlayers = game.teams[0].players
@@ -98,17 +99,26 @@ const client = new tmi.Client({
 
 client.connect();
 
+let simpleCache = undefined
+
+// Wait for 10 min to clear cache
+setInterval(() => simpleCache = undefined, 600_000)
+
 // Looking at all messages
 client.on("message", async (channel, tags, message) => {
   const username = tags["display-name"]
 
   if(message === '!dailyMVP') {
     try {
+      if(simpleCache) {
+        console.log("Used cache")
+        return client.say(channel, `Top fragger is: ${simpleCache.name} with ${simpleCache.kills} Kills 🔫 and ${simpleCache.deaths} Deaths ☠️`);
+      }
       const fragger = await getTopFragger()
-      console.log(fragger)
+      simpleCache = fragger
       client.say(channel, `Top fragger is: ${fragger.name} with ${fragger.kills} Kills 🔫 and ${fragger.deaths} Deaths ☠️`);
     } catch (error) {
       console.log(error)
-    } 
+    }
   }
 });
