@@ -1,6 +1,6 @@
 const getMonth = (date) => {
   const currentMonth = date.getMonth() + 1
-  if (currentMonth < 10) { 
+  if (currentMonth < 10) {
     return `0${currentMonth}`
   }
   return `${currentMonth}`
@@ -8,7 +8,7 @@ const getMonth = (date) => {
 
 const getDay = (date) => {
   const currentDay = date.getDate()
-  if (currentDay < 10) { 
+  if (currentDay < 10) {
     return `0${currentDay}`
   }
   return `${currentDay}`
@@ -23,18 +23,17 @@ const getDaysBackToTodayDates = (daysBack) => {
 
 
   const formattedToday = `${today.getFullYear()}-${getMonth(today)}-${getDay(today)}`;
-  const formattedYesterday = `${yesterday.getFullYear()}-${
-    getMonth(yesterday)
-  }-${getDay(yesterday)}`;
+  const formattedYesterday = `${yesterday.getFullYear()}-${getMonth(yesterday)
+    }-${getDay(yesterday)}`;
 
-  return {yesterday: formattedYesterday, today: formattedToday}
+  return { yesterday: formattedYesterday, today: formattedToday }
 }
 
 // Fetch all csgo games from yesterday
 export const getGamesQuery = () => {
   // Dota = 2 CSGO = 1
   const gameId = 1;
-  const {today, yesterday} = getDaysBackToTodayDates()
+  const { today, yesterday } = getDaysBackToTodayDates()
 
   return `
 query GetAllSeriesLast24Hours {
@@ -67,7 +66,7 @@ query GetAllSeriesLast24Hours {
 
 
 export const getSeriesFromTournamentIds = (ids) => {
-  const {today, yesterday} = getDaysBackToTodayDates(200)
+  const { today, yesterday } = getDaysBackToTodayDates(2)
 
   return `query GetAllSeriesInNext24Hours {
     allSeries(

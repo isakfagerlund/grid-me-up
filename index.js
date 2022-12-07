@@ -2,7 +2,7 @@ import * as tmi from 'tmi.js'
 import * as dotenv from 'dotenv'
 dotenv.config()
 import fetch from 'node-fetch';
-import { getGamesQuery, getSeriesFromTournamentIds, getLiveSeriesDataFromId} from "./queries.js";
+import { getGamesQuery, getSeriesFromTournamentIds, getLiveSeriesDataFromId } from "./queries.js";
 
 const getGamesFromYesterday = async (gamesQuery) => {
   try {
@@ -38,7 +38,6 @@ const getLivePlayerData = async (query) => {
   return await request.json();
 }
 
-
 const getPlayersFromGames = (games) => {
   const players = games.map(game => {
     const teamOnePlayers = game.teams[0].players
@@ -48,19 +47,19 @@ const getPlayersFromGames = (games) => {
   }).flat()
 
   console.log('Games found:', games.length)
-  
+
   // Loop array and find duplicates. Merge kills and deasths with all duplicates
   const playersMap = new Map()
   const mergePlayers = players.map(player => {
     const playerInMap = playersMap.get(player.name)
-    if(playerInMap){
+    if (playerInMap) {
       playersMap.set(player.name, {
         name: player.name,
         kills: playerInMap.kills + player.kills,
         deaths: playerInMap.deaths + player.deaths
       })
-    }else {
-      playersMap.set(player.name, {name: player.name, kills: player.kills, deaths: player.deaths})
+    } else {
+      playersMap.set(player.name, { name: player.name, kills: player.kills, deaths: player.deaths })
     }
   }
   )
@@ -73,19 +72,19 @@ const getAllTotalGames = async (ids) => {
   const games = data.map(series => series.data?.seriesState?.games).filter(Boolean)
   return games.flat()
 }
- 
+
 const getTopFragger = async () => {
   const { data } = await getGamesFromYesterday(getSeriesFromTournamentIds(["223645", "106889", "230654", "251104", "106888"]))
 
   const series = data?.allSeries?.edges?.map(edge => edge.node.id)
 
-  if(!series) {
+  if (!series) {
     return console.log('There is no series')
   }
 
   const allGames = await getAllTotalGames(series)
   const players = getPlayersFromGames(allGames)
-  const topFragger = Array.from(players.values()).sort((a,b) => b.kills - a.kills)[0]
+  const topFragger = Array.from(players.values()).sort((a, b) => b.kills - a.kills)[0]
   return topFragger
 }
 
@@ -108,9 +107,9 @@ setInterval(() => simpleCache = undefined, 600_000)
 client.on("message", async (channel, tags, message) => {
   const username = tags["display-name"]
 
-  if(message === '!dailyMVP') {
+  if (message === '!dailyMVP') {
     try {
-      if(simpleCache) {
+      if (simpleCache) {
         console.log("Used cache")
         return client.say(channel, `Top fragger is: ${simpleCache.name} with ${simpleCache.kills} Kills 🔫 and ${simpleCache.deaths} Deaths ☠️`);
       }
