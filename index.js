@@ -100,8 +100,8 @@ client.connect();
 
 let simpleCache = undefined
 
-// Wait for 10 min to clear cache
-setInterval(() => simpleCache = undefined, 600_000)
+// Wait for 60 min to clear cache
+setInterval(() => simpleCache = undefined, 3_600_000)
 
 // Looking at all messages
 client.on("message", async (channel, tags, message) => {
