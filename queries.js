@@ -65,8 +65,8 @@ query GetAllSeriesLast24Hours {
 };
 
 
-export const getSeriesFromTournamentIds = (ids) => {
-  const { today, yesterday } = getDaysBackToTodayDates(2)
+export const getSeriesFromTournamentIdsByDate = (ids) => {
+  const { today, yesterday } = getDaysBackToTodayDates(30)
 
   return `query GetAllSeriesInNext24Hours {
     allSeries(
@@ -93,6 +93,51 @@ export const getSeriesFromTournamentIds = (ids) => {
         cursor
         node{
           id
+        }
+      }
+    }
+  }`
+}
+
+export const getAllSeriesFromTournamentIds = (ids) => {
+
+  return `query GetAllSeriesInNext24Hours {
+    allSeries(
+      filter:{
+        tournamentIds: {
+          in: [${ids}],
+        }
+      }
+      last: 50,
+      orderBy: StartTimeScheduled,
+    ) {
+      totalCount,
+      pageInfo{
+        hasPreviousPage
+        hasNextPage
+        startCursor
+        endCursor
+      }
+      edges{
+        cursor
+        node{
+          title {
+            nameShortened
+          }
+          tournament {
+            nameShortened
+          }
+          startTimeScheduled
+          format {
+            name
+            nameShortened
+          }
+          teams {
+            baseInfo {
+              name
+            }
+            scoreAdvantage
+          }
         }
       }
     }
