@@ -76,7 +76,7 @@ export const getSeriesFromTournamentIdsByDate = (ids) => {
         }
         startTimeScheduled:{
           gte: "${yesterday}T09:05:39+01:00"
-          lte: "${today}T09:05:39+01:00"
+          lte: "${today}T23:59:00+01:00"
         }
       }
       last: 50,
