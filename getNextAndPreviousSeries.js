@@ -40,7 +40,7 @@ const getNextSeries = (series) => {
     const teamTwo = serie.node.teams[1].baseInfo.name
     const time = format(new Date(serie.node.startTimeScheduled), 'k:mm')
 
-    return `${teamOne} vs ${teamTwo} - ${time}`
+    return `${teamOne} vs ${teamTwo} - ${time} UTC`
   }
   
   return formattedSerie()
@@ -64,7 +64,7 @@ const getPreviousSeries = (series) => {
     const teamTwo = serie.node.teams[1].baseInfo.name
     const time = format(new Date(serie.node.startTimeScheduled), 'k:mm')
 
-    return `${teamOne} vs ${teamTwo} - ${time}`
+    return `${teamOne} vs ${teamTwo} - ${time} UTC`
   }
   
   return formattedSerie()

@@ -33,7 +33,7 @@ client.on("message", async (channel, tags, message) => {
     try {
       const fragger = await getTopFragger([process.env.TOURNAMENT_ID])
 
-      client.say(channel, `Top fragger is: ${fragger.name} with ${fragger.kills} Kills 🔫 and ${fragger.deaths} Deaths ☠️`);
+      client.say(channel, `The top overall fragger in the CCT Central Europe Malta Finals is: ${fragger.name} with ${fragger.kills} Kills`);
     } catch (error) {
       console.log(error)
     }
